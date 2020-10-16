@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from . import models as profile_models
+from . import models as profiles_models
+
 
 #  ******************************************************************************************************************  #
 
@@ -16,7 +17,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     """Serializes a user profile object"""
 
     class Meta:
-        model = profile_models.UserProfile
+        model = profiles_models.UserProfile
         fields = ('id', 'email', 'name', 'password')
         extra_kwargs = {
             'password': {
@@ -27,7 +28,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """Create and return a new user"""
-        user = profile_models.UserProfile.objects.create_user(
+        user = profiles_models.UserProfile.objects.create_user(
             email=validated_data['email'],
             name=validated_data['name'],
             password=validated_data['password']
@@ -42,3 +43,19 @@ class UserProfileSerializer(serializers.ModelSerializer):
             instance.set_password(password)
 
         return super().update(instance, validated_data)
+
+
+#  ******************************************************************************************************************  #
+
+
+class ProfileFeedItemSerializer(serializers.ModelSerializer):
+    """Serializes profile feed item object"""
+
+    class Meta:
+        model = profiles_models.ProfileFeedItem
+        fields = ('id', 'user_profile', 'status_text', 'created_on')
+        extra_kwargs = {
+            'user_profile': {
+                'read_only': True
+            }
+        }

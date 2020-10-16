@@ -7,6 +7,7 @@ from . import views as profiles_views
 router = DefaultRouter()
 router.register('hello-viewset', profiles_views.HelloViewSet, basename='hello-viewset')
 router.register('profile', profiles_views.UserProfileViewSet)
+router.register('feed', profiles_views.ProfileFeedItemViewSet)
 
 urlpatterns = [
     path('hello-view/', profiles_views.HelloApiView.as_view()),
